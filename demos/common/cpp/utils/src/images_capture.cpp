@@ -42,6 +42,22 @@ public:
             throw InvalidInput("Can't find the image by " + input);
 
         img = cv::imread(input);
+        
+        cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
+        std::vector<float> mean_value{0.5, 0.5, 0.5};
+        std::vector<float> std_value{0.5, 0.5, 0.5};
+
+        img.convertTo(img, CV_32FC3, 1.0 / (255.0 * 0.5), -1.0);
+
+        // for (int nrow = 0; nrow < img.rows; nrow++) {
+        //   for (int ncol = 0; ncol < img.cols; ncol++) {
+        //     cv::Vec3f bgr = img.at<cv::Vec3f>(nrow, ncol); 
+        //     // img.at<cv::Vec3f>(nrow, ncol)[0] = (bgr.val[0] - mean_value[0]) / std_value[0];
+        //     // img.at<cv::Vec3f>(nrow, ncol)[1] = (bgr.val[1] - mean_value[1]) / std_value[1];
+        //     // img.at<cv::Vec3f>(nrow, ncol)[2] = (bgr.val[2] - mean_value[2]) / std_value[2];
+        //   }
+        // }
+
         if(!img.data)
             throw OpenError("Can't open the image from " + input);
         else

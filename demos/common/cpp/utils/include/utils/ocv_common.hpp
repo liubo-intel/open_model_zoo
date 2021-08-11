@@ -42,7 +42,8 @@ void matU8ToBlob(const cv::Mat& orig_image, const InferenceEngine::Blob::Ptr& bl
     if (channels == 1) {
         for (size_t  h = 0; h < height; h++) {
             for (size_t w = 0; w < width; w++) {
-                blob_data[batchOffset + h * width + w] = resized_image.at<uchar>(h, w);
+                // blob_data[batchOffset + h * width + w] = resized_image.at<uchar>(h, w);
+                blob_data[batchOffset + h * width + w] = resized_image.at<float>(h, w);
             }
         }
     } else if (channels == 3) {
@@ -50,7 +51,8 @@ void matU8ToBlob(const cv::Mat& orig_image, const InferenceEngine::Blob::Ptr& bl
             for (size_t  h = 0; h < height; h++) {
                 for (size_t w = 0; w < width; w++) {
                     blob_data[batchOffset + c * width * height + h * width + w] =
-                            resized_image.at<cv::Vec3b>(h, w)[c];
+                            // resized_image.at<cv::Vec3b>(h, w)[c];
+                            resized_image.at<cv::Vec3f>(h, w)[c];
                 }
             }
         }

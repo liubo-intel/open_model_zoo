@@ -220,16 +220,20 @@ def main():
             frame = frame_meta['frame']
             start_time = frame_meta['start_time']
             frame = visualizer.overlay_masks(frame, objects, output_transform)
+            frame_char = frame.astype("uint8")
+
             presenter.drawGraphs(frame)
             metrics.update(start_time, frame)
 
             if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id_to_show <= args.output_limit-1):
-                video_writer.write(frame)
+                # video_writer.write(frame)
+                video_writer.write(frame_char)
             next_frame_id_to_show += 1
 
             if not args.no_show:
                 cv2.imshow('Segmentation Results', frame)
-                key = cv2.waitKey(1)
+                # key = cv2.waitKey(1)
+                key = cv2.waitKey(1000)
                 if key == 27 or key == 'q' or key == 'Q':
                     break
                 presenter.handleKey(key)

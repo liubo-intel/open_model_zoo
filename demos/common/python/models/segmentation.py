@@ -33,7 +33,8 @@ class SegmentationModel(Model):
 
         blob_name = next(iter(self.net.input_info))
         blob = self.net.input_info[blob_name]
-        blob.precision = "U8"
+        # blob.precision = "U8"
+        blob.precision = "FP32"
         blob.layout = "NCHW"
 
         input_size = blob.input_data.shape

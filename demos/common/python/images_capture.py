@@ -3,7 +3,7 @@ import sys
 import copy
 
 import cv2
-
+import numpy as np
 
 class InvalidInput(Exception):
 
@@ -36,6 +36,20 @@ class ImreadWrapper(ImagesCapture):
         if not os.path.isfile(input):
             raise InvalidInput("Can't find the image by {}".format(input))
         self.image = cv2.imread(input, cv2.IMREAD_COLOR)
+
+        mean=(0.5, 0.5, 0.5)
+        std=(0.5, 0.5, 0.5)
+
+        im = self.image
+
+        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+
+        im = im.astype(np.float32, copy=False) / 255.0
+        im -= mean
+        im /= std
+     
+        self.image = im
+
         if self.image is None:
             raise OpenError("Can't open the image from {}".format(input))
         self.can_read = True

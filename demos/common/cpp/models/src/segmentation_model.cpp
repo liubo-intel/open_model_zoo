@@ -37,7 +37,8 @@ void SegmentationModel::prepareInputsOutputs(InferenceEngine::CNNNetwork& cnnNet
         throw std::runtime_error("3-channel 4-dimensional model's input is expected");
 
     InputInfo& inputInfo = *cnnNetwork.getInputsInfo().begin()->second;
-    inputInfo.setPrecision(Precision::U8);
+    // inputInfo.setPrecision(Precision::U8);
+    inputInfo.setPrecision(Precision::FP32);
 
     if (useAutoResize) {
         inputInfo.getPreProcess().setResizeAlgorithm(ResizeAlgorithm::RESIZE_BILINEAR);
@@ -87,7 +88,8 @@ std::shared_ptr<InternalModelData> SegmentationModel::preprocess(const InputData
     {
         /* Resize and copy data from the image to the input blob */
         Blob::Ptr frameBlob = request->GetBlob(inputsNames[0]);
-        matU8ToBlob<uint8_t>(img, frameBlob);
+        // matU8ToBlob<uint8_t>(img, frameBlob);
+        matU8ToBlob<float>(img, frameBlob);
         resPtr = std::make_shared<InternalImageModelData>(img.cols, img.rows);
     }
 

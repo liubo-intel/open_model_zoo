@@ -181,7 +181,7 @@ cv::Mat renderSegmentationData(const ImageResult& result, OutputTransform& outpu
     if (inputImg.empty()) {
         throw std::invalid_argument("Renderer: image provided in metadata is empty");
     }
-
+    inputImg.convertTo(inputImg, CV_8UC3);
     // Visualizing result data over source image
     cv::Mat output = inputImg / 2 + applyColorMap(result.resultImage) / 2;
     outputTransform.resize(output);
@@ -286,7 +286,8 @@ int main(int argc, char* argv[])
                     cv::imshow("Segmentation Results", outFrame);
 
                     //--- Processing keyboard events
-                    auto key = cv::waitKey(1);
+                    // auto key = cv::waitKey(1);
+                    auto key = cv::waitKey(1000);
                     if (27 == key || 'q' == key || 'Q' == key) { // Esc
                         keepRunning = false;
                     } else {
@@ -315,7 +316,8 @@ int main(int argc, char* argv[])
                 if (!FLAGS_no_show) {
                     cv::imshow("Segmentation Results", outFrame);
                     //--- Updating output window
-                    cv::waitKey(1);
+                    // cv::waitKey(1);
+                    cv::waitKey(1000);
                 }
             }
         }
