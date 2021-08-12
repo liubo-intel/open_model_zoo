@@ -22,6 +22,9 @@ class Model:
         self.logger = logging.getLogger()
         self.logger.info('Reading network from IR...')
         self.net = ie.read_network(model_path)
+        if str(model_path).endswith('.pdmodel'):
+            self.net.reshape({'x': [1,3,512,1024]}) # for deeplabv3
+            # self.net.reshape({'x': [1,3,1024,1024]}) # for bisenet
         self.set_batch_size(1)
         self.input_transform = input_transform
 

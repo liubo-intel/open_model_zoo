@@ -43,6 +43,12 @@ InferenceEngine::CNNNetwork ModelBase::prepareNetwork(InferenceEngine::Core& cor
     slog::info << "Loading network files" << slog::endl;
     /** Read network model **/
     InferenceEngine::CNNNetwork cnnNetwork = core.ReadNetwork(modelFileName);
+
+    std::string::size_type idx = modelFileName.find(".pdmodel");
+    if(idx != std::string::npos )
+        cnnNetwork.reshape({{"x", SizeVector({1, 3, 512, 1024})}}); // for deeplabv3
+        // cnnNetwork.reshape({{"x", SizeVector({1, 3, 1024, 1024})}}); // for bisenet
+
     /** Set batch size to 1 **/
     slog::info << "Batch size is forced to 1." << slog::endl;
     setBatchOne(cnnNetwork);
